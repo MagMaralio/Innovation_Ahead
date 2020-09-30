@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Innovation_Ahead.CAR>
+
+@{
+    ViewBag.Title = "Customer";
+}
+
+<h2>Customer</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.carName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.makeyear)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.carName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.makeyear)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.carID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.carID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.carID })
+        </td>
+    </tr>
+}
+
+</table>
