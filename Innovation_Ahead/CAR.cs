@@ -14,8 +14,10 @@ namespace Innovation_Ahead
     
     public partial class CAR
     {
-        public int carID { get; set; }
+        public string clientName { get; set; }
+        public string mobileNo { get; set; }
         public string carName { get; set; }
         public string makeyear { get; set; }
+        public string sparePart { get; set; }
     }
 }

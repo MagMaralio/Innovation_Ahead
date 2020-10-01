@@ -4,34 +4,37 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="VehiclesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="VehiclesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="CARS">
           <Key>
-            <PropertyRef Name="carID" />
+            <PropertyRef Name="mobileNo" />
           </Key>
-          <Property Name="carID" Type="int" Nullable="false" />
+          <Property Name="clientName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="mobileNo" Type="varchar" MaxLength="11" Nullable="false" />
           <Property Name="carName" Type="varchar" MaxLength="20" />
           <Property Name="makeyear" Type="varchar" MaxLength="4" />
+          <Property Name="sparePart" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityContainer Name="VehiclesModelStoreContainer">
           <EntitySet Name="CARS" EntityType="Self.CARS" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="VehiclesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="VehiclesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CARS" EntityType="VehiclesModel.CAR" />
+        </EntityContainer>
         <EntityType Name="CAR">
           <Key>
-            <PropertyRef Name="carID" />
+            <PropertyRef Name="mobileNo" />
           </Key>
-          <Property Name="carID" Type="Int32" Nullable="false" />
+          <Property Name="clientName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="mobileNo" Type="String" Nullable="false" MaxLength="11" FixedLength="false" Unicode="false" />
           <Property Name="carName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="makeyear" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="sparePart" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityContainer Name="VehiclesEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="CARS" EntityType="Self.CAR" />
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -41,9 +44,11 @@
           <EntitySetMapping Name="CARS">
             <EntityTypeMapping TypeName="VehiclesModel.CAR">
               <MappingFragment StoreEntitySet="CARS">
-                <ScalarProperty Name="carID" ColumnName="carID" />
-                <ScalarProperty Name="carName" ColumnName="carName" />
+                <ScalarProperty Name="sparePart" ColumnName="sparePart" />
                 <ScalarProperty Name="makeyear" ColumnName="makeyear" />
+                <ScalarProperty Name="carName" ColumnName="carName" />
+                <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
+                <ScalarProperty Name="clientName" ColumnName="clientName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
