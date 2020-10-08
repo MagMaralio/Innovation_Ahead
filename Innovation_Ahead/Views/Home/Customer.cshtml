@@ -9,43 +9,7 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.clientName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.mobileNo)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.carName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.makeyear)
-        </th>
-        <th></th>
-    </tr>
+<p>
+    @Html.DropDownList("filter", ViewBag.filter as SelectList)
+</p>
 
-@foreach (var item in Model) {
-<tr>
-    <td>
-        @Html.DisplayFor(modelItem => item.clientName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.mobileNo)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.carName)
-    </td>
-    <td>
-        @Html.DisplayFor(modelItem => item.makeyear)
-    </td>
-    <td>
-        @Html.ActionLink("Edit", "Edit", new { id = item.mobileNo }) |
-        @Html.ActionLink("Details", "Details", new { id = item.mobileNo }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.mobileNo })
-    </td>
-</tr>
-}
-
-</table>

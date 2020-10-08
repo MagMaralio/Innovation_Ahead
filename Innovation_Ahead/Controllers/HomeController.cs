@@ -33,7 +33,16 @@ namespace Innovation_Ahead.Controllers
         {
             var query = from c in context.CARS
                         select c;
-            return View(query.ToList());
+            var table = query.ToList();
+            List<SelectListItem> filter = new List<SelectListItem>();
+
+            foreach (var row in table)
+            {
+                filter.Add(new SelectListItem() { Text= (row.carName + " "
+                    + row.makeyear + " " + row.sparePart)});
+            }
+            ViewBag.filter = filter;
+            return View(table);
         }
 
         public ActionResult Client()
