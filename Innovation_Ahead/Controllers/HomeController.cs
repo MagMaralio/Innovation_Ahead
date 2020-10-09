@@ -32,17 +32,22 @@ namespace Innovation_Ahead.Controllers
 
             return View();
         }
-        public ActionResult Customer()
+        public ActionResult Customer(string fil = "a")
         {
             var query = from c in context.CARS
                         select c;
             var table = query.ToList();
             List<SelectListItem> filter = new List<SelectListItem>();
-
             foreach (var row in table)
             {
-                filter.Add(new SelectListItem() { Text= (row.carName + " "
-                    + row.makeyear + " " + row.sparePart)});
+                if ((row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                {
+                    filter.Add(new SelectListItem()
+                    {
+                        Text = (row.carName + " "
+                    + row.makeyear + " " + row.sparePart)
+                    });
+                }
             }
             ViewBag.filter = filter;
             return View(table);

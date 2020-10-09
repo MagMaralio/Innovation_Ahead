@@ -23,5 +23,7 @@ namespace Innovation_Ahead
         public string makeyear { get; set; }
         [Required]
         public string sparePart { get; set; }
+
+        public string filter { get; set; }
     }
 }
