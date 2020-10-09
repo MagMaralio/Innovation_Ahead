@@ -15,7 +15,10 @@ namespace Innovation_Ahead.Controllers
         {
             return View();
         }
-
+        public ActionResult Error()
+        {
+            return View();
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -61,8 +64,14 @@ namespace Innovation_Ahead.Controllers
             carObject.makeyear = carmodel.makeyear;
             carObject.sparePart = carmodel.sparePart;
             context.CARS.Add(carObject);
-            context.SaveChanges();
+            if (carObject.clientName != "null" && carObject.mobileNo != "null"
+                && carObject.sparePart != "null")
+            {
+                context.SaveChanges();
+            }
+            else { return RedirectToAction("Error"); }
             return RedirectToAction("Customer");
         }
+        
     }
 }
