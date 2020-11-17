@@ -12,6 +12,8 @@ namespace Innovation_Ahead
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class VehiclesEntities : DbContext
     {
@@ -26,5 +28,32 @@ namespace Innovation_Ahead
         }
     
         public virtual DbSet<CAR> CARS { get; set; }
+        public virtual DbSet<UserRegister> UserRegisters { get; set; }
+    
+        public virtual ObjectResult<Nullable<int>> spLogin(string username, string password)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passwordParameter);
+        }
+    
+        public virtual int spRegister(string username, string password)
+        {
+            var usernameParameter = username != null ?
+                new ObjectParameter("Username", username) :
+                new ObjectParameter("Username", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spRegister", usernameParameter, passwordParameter);
+        }
     }
 }

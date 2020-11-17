@@ -155,6 +155,9 @@
     </Compile>
     <Compile Include="Models\Car.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserRegister.cs">
+      <DependentUpon>vehicleModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="vehicleModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,6 +229,8 @@
     </Content>
     <Content Include="Views\Home\Customer.cshtml" />
     <Content Include="Views\Home\Client.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

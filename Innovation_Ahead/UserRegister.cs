@@ -12,12 +12,9 @@ namespace Innovation_Ahead
     using System;
     using System.Collections.Generic;
     
-    public partial class CAR
+    public partial class UserRegister
     {
-        public string clientName { get; set; }
-        public string mobileNo { get; set; }
-        public string carName { get; set; }
-        public string makeyear { get; set; }
-        public string sparePart { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
