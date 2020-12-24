@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Innovation_Ahead.Models;
@@ -11,6 +14,7 @@ namespace Innovation_Ahead.Controllers
     public class HomeController : Controller
     {
         VehiclesEntities context = new VehiclesEntities();
+        VehiclesEntities context1 = new VehiclesEntities();
         public ActionResult Register()
         {
             return View();
@@ -21,7 +25,7 @@ namespace Innovation_Ahead.Controllers
         {
             UserRegister postmodel = new UserRegister();
             postmodel.Username = Usermodel.Username;
-            postmodel.Password = Usermodel.Password;
+            postmodel.Password = Encryption(Usermodel.Password.Trim());
             context.UserRegisters.Add(postmodel);
             if (postmodel.Username != null && postmodel.Password != null)
             {
@@ -31,6 +35,50 @@ namespace Innovation_Ahead.Controllers
             }
             return RedirectToAction("Login");
         }
+
+        private string Encryption(string secret)
+        {
+            string key = "MAKV2SPBNI99212";
+            byte[] converted_secret = Encoding.Unicode.GetBytes(secret);
+            using (Aes encryptor = Aes.Create())
+            {
+                Rfc2898DeriveBytes encoded = new Rfc2898DeriveBytes(key, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+                encryptor.Key = encoded.GetBytes(32);
+                encryptor.IV = encoded.GetBytes(16);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateEncryptor(), CryptoStreamMode.Write))
+                    {
+                        cs.Write(converted_secret, 0, converted_secret.Length);
+                        cs.Close();
+                    }
+                    secret = Convert.ToBase64String(ms.ToArray());
+                }
+            }
+            return secret;
+        }
+
+        //private string Decryption(string crypto)
+        //{
+        //    string key = "MAKV2SPBNI99212";
+        //    byte[] converted_crypto = Convert.FromBase64String(crypto);
+        //    using (Aes encryptor = Aes.Create())
+        //    {
+        //        Rfc2898DeriveBytes decoded = new Rfc2898DeriveBytes()(key, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
+        //        encryptor.Key = decoded.GetBytes(32);
+        //        encryptor.IV = decoded.GetBytes(16);
+        //        using (MemoryStream ms = new MemoryStream())
+        //        {
+        //            using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
+        //            {
+        //                cs.Write(converted_crypto, 0, converted_crypto.Length);
+        //                cs.Close();
+        //            }
+        //            crypto = Encoding.Unicode.GetString(ms.ToArray());
+        //        }
+        //    }
+        //    return crypto;
+        //}
 
         public ActionResult Login()
         {
@@ -48,6 +96,7 @@ namespace Innovation_Ahead.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserRegister Usermodel)
         {
+            Usermodel.Password = Encryption(Usermodel.Password.Trim());
             var data = context.UserRegisters.Where(s => s.Username.Equals(Usermodel.Username) && s.Password.Equals(Usermodel.Password)).ToList();
             if (data.Count > 0)
             {
@@ -85,17 +134,22 @@ namespace Innovation_Ahead.Controllers
         public ActionResult Customer(string fil = "a")
         {
             var query = from c in context.CARS
-                        select c;
+                        join p in context.CarParts on c.clientName equals p.link1
+                        where c.mobileNo == p.link2
+                        select p;
             var table = query.ToList();
-            List<SelectListItem> filter = new List<SelectListItem>();
+            List<CarPart> filter = new List<CarPart>();
             foreach (var row in table)
             {
-                if ((row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                if ((row.link1+ " " +row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
                 {
-                    filter.Add(new SelectListItem()
+                    filter.Add(new CarPart()
                     {
-                        Text = (row.carName + " "
-                    + row.makeyear + " " + row.sparePart)
+                        link1 = row.link1,
+                        link2 = row.link2,
+                        carName = row.carName,
+                        makeyear = row.makeyear,
+                        sparePart = row.sparePart
                     });
                 }
             }
@@ -113,16 +167,21 @@ namespace Innovation_Ahead.Controllers
         public ActionResult Client(car carmodel)
         {
             CAR carObject = new CAR();
+            CarPart carpartsObject = new CarPart();
             carObject.clientName = (string)Session["usern@me"];
             carObject.mobileNo = carmodel.mobileNo;
-            carObject.carName = carmodel.carName;
-            carObject.makeyear = carmodel.makeyear;
-            carObject.sparePart = carmodel.sparePart;
+            carpartsObject.carName = carmodel.carName;
+            carpartsObject.makeyear = carmodel.makeyear;
+            carpartsObject.sparePart = carmodel.sparePart;
+            carpartsObject.link1 = (string)Session["usern@me"];
+            carpartsObject.link2 = carmodel.mobileNo;
             context.CARS.Add(carObject);
+            context1.CarParts.Add(carpartsObject);
             if (carObject.clientName != "null" && carObject.mobileNo != "null"
-                && carObject.sparePart != "null")
+                && carpartsObject.sparePart != "null")
             {
                 context.SaveChanges();
+                context1.SaveChanges();
             }
             else { return RedirectToAction("Error"); }
             return RedirectToAction("Customer");

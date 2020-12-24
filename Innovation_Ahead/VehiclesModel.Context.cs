@@ -27,6 +27,7 @@ namespace Innovation_Ahead
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<CarPart> CarParts { get; set; }
         public virtual DbSet<CAR> CARS { get; set; }
         public virtual DbSet<UserRegister> UserRegisters { get; set; }
     

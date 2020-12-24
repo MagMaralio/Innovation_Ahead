@@ -11,13 +11,16 @@ namespace Innovation_Ahead
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
-    public partial class UserRegister
+    
+    public partial class CarPart
     {
-        [Required]
-        public string Username { get; set; }
-        [Required]
-        public string Password { get; set; }
+        public int sno { get; set; }
+        public string carName { get; set; }
+        public string makeyear { get; set; }
+        public string sparePart { get; set; }
+        public string link1 { get; set; }
+        public string link2 { get; set; }
+    
+        public virtual CAR CAR { get; set; }
     }
 }

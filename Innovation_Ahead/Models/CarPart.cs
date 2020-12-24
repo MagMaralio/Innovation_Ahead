@@ -6,14 +6,15 @@ using System.Web;
 
 namespace Innovation_Ahead.Models
 {
-    public class car
+    public class CarPart
     {
-        [Required]
-        public string clientName { get; set; }
-        [Required]
-        public string mobileNo { get; set; }
         public string carName { get; set; }
         public string makeyear { get; set; }
+        [Required]
         public string sparePart { get; set; }
+        public string link1 { get; set; }
+        public string link2 { get; set; }
+
+        public virtual CAR CAR { get; set; }
     }
 }

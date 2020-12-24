@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VehiclesModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CarPart">
+          <Key>
+            <PropertyRef Name="sno" />
+          </Key>
+          <Property Name="sno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="carName" Type="varchar" MaxLength="20" />
+          <Property Name="makeyear" Type="varchar" MaxLength="4" />
+          <Property Name="sparePart" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="link1" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="link2" Type="varchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CARS">
+          <Key>
+            <PropertyRef Name="clientName" />
+            <PropertyRef Name="mobileNo" />
+          </Key>
+          <Property Name="clientName" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="mobileNo" Type="varchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRegister">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_user">
+          <End Role="CARS" Type="Self.CARS" Multiplicity="1" />
+          <End Role="CarPart" Type="Self.CarPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CARS">
+              <PropertyRef Name="clientName" />
+              <PropertyRef Name="mobileNo" />
+            </Principal>
+            <Dependent Role="CarPart">
+              <PropertyRef Name="link1" />
+              <PropertyRef Name="link2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spRegister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Username" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="VehiclesModelStoreContainer">
+          <EntitySet Name="CarPart" EntityType="Self.CarPart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CARS" EntityType="Self.CARS" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRegister" EntityType="Self.UserRegister" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_user" Association="Self.FK_user">
+            <End Role="CARS" EntitySet="CARS" />
+            <End Role="CarPart" EntitySet="CarPart" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VehiclesModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CarPart">
+          <Key>
+            <PropertyRef Name="sno" />
+          </Key>
+          <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="carName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="makeyear" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="sparePart" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="link1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="link2" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CAR" Relationship="Self.FK_user" FromRole="CarPart" ToRole="CARS" />
+        </EntityType>
+        <EntityType Name="CAR">
+          <Key>
+            <PropertyRef Name="clientName" />
+            <PropertyRef Name="mobileNo" />
+          </Key>
+          <Property Name="clientName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mobileNo" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CarParts" Relationship="Self.FK_user" FromRole="CARS" ToRole="CarPart" />
+        </EntityType>
+        <EntityType Name="UserRegister">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_user">
+          <End Role="CARS" Type="Self.CAR" Multiplicity="1" />
+          <End Role="CarPart" Type="Self.CarPart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CARS">
+              <PropertyRef Name="clientName" />
+              <PropertyRef Name="mobileNo" />
+            </Principal>
+            <Dependent Role="CarPart">
+              <PropertyRef Name="link1" />
+              <PropertyRef Name="link2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VehiclesEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CarParts" EntityType="Self.CarPart" />
+          <EntitySet Name="CARS" EntityType="Self.CAR" />
+          <EntitySet Name="UserRegisters" EntityType="Self.UserRegister" />
+          <AssociationSet Name="FK_user" Association="Self.FK_user">
+            <End Role="CARS" EntitySet="CARS" />
+            <End Role="CarPart" EntitySet="CarParts" />
+          </AssociationSet>
+          <FunctionImport Name="spLogin" ReturnType="Collection(Int32)">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spRegister">
+            <Parameter Name="Username" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VehiclesModelStoreContainer" CdmEntityContainer="VehiclesEntities">
+          <EntitySetMapping Name="CarParts">
+            <EntityTypeMapping TypeName="VehiclesModel.CarPart">
+              <MappingFragment StoreEntitySet="CarPart">
+                <ScalarProperty Name="sno" ColumnName="sno" />
+                <ScalarProperty Name="carName" ColumnName="carName" />
+                <ScalarProperty Name="makeyear" ColumnName="makeyear" />
+                <ScalarProperty Name="sparePart" ColumnName="sparePart" />
+                <ScalarProperty Name="link1" ColumnName="link1" />
+                <ScalarProperty Name="link2" ColumnName="link2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CARS">
+            <EntityTypeMapping TypeName="VehiclesModel.CAR">
+              <MappingFragment StoreEntitySet="CARS">
+                <ScalarProperty Name="clientName" ColumnName="clientName" />
+                <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserRegisters">
+            <EntityTypeMapping TypeName="VehiclesModel.UserRegister">
+              <MappingFragment StoreEntitySet="UserRegister">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spLogin" FunctionName="VehiclesModel.Store.spLogin" />
+          <FunctionImportMapping FunctionImportName="spRegister" FunctionName="VehiclesModel.Store.spRegister" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

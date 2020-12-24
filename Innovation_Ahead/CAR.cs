@@ -14,10 +14,19 @@ namespace Innovation_Ahead
     
     public partial class CAR
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public CAR()
+        {
+            this.CarParts = new HashSet<CarPart>();
+        }
+    
         public string clientName { get; set; }
         public string mobileNo { get; set; }
         public string carName { get; set; }
         public string makeyear { get; set; }
         public string sparePart { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CarPart> CarParts { get; set; }
     }
 }

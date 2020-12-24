@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Innovation_Ahead.CAR>
+﻿@model IEnumerable<Innovation_Ahead.CarPart>
 
 @{
     ViewBag.Title = "Customer";
@@ -18,5 +18,27 @@
     }
 </p>
 <p>
-    @Html.DropDownList("filter", ViewBag.filter as SelectList)
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>Provider</th>
+                <th>Contact</th>
+                <th>Car Name</th>
+                <th>Make year</th>
+                <th>Spare Part</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.filter)
+            {
+                <tr>
+                    <td>@item.link1</td>
+                    <td>@item.link2</td>
+                    <td>@item.carName</td>
+                    <td>@item.makeyear</td>
+                    <td>@item.sparePart</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </p>
