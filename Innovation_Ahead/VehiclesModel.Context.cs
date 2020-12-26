@@ -28,7 +28,6 @@ namespace Innovation_Ahead
         }
     
         public virtual DbSet<CarPart> CarParts { get; set; }
-        public virtual DbSet<CAR> CARS { get; set; }
         public virtual DbSet<UserRegister> UserRegisters { get; set; }
     
         public virtual ObjectResult<Nullable<int>> spLogin(string username, string password)
@@ -44,7 +43,7 @@ namespace Innovation_Ahead
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passwordParameter);
         }
     
-        public virtual int spRegister(string username, string password)
+        public virtual int spRegister(string username, string password, string mobileNo)
         {
             var usernameParameter = username != null ?
                 new ObjectParameter("Username", username) :
@@ -54,7 +53,11 @@ namespace Innovation_Ahead
                 new ObjectParameter("Password", password) :
                 new ObjectParameter("Password", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spRegister", usernameParameter, passwordParameter);
+            var mobileNoParameter = mobileNo != null ?
+                new ObjectParameter("mobileNo", mobileNo) :
+                new ObjectParameter("mobileNo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spRegister", usernameParameter, passwordParameter, mobileNoParameter);
         }
     }
 }

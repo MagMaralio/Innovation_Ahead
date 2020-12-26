@@ -14,7 +14,7 @@ namespace Innovation_Ahead.Controllers
     public class HomeController : Controller
     {
         VehiclesEntities context = new VehiclesEntities();
-        VehiclesEntities context1 = new VehiclesEntities();
+
         public ActionResult Register()
         {
             return View();
@@ -26,6 +26,7 @@ namespace Innovation_Ahead.Controllers
             UserRegister postmodel = new UserRegister();
             postmodel.Username = Usermodel.Username;
             postmodel.Password = Encryption(Usermodel.Password.Trim());
+            postmodel.mobileNo = Usermodel.mobileNo;
             context.UserRegisters.Add(postmodel);
             if (postmodel.Username != null && postmodel.Password != null)
             {
@@ -133,8 +134,8 @@ namespace Innovation_Ahead.Controllers
         }
         public ActionResult Customer(string fil = "a")
         {
-            var query = from c in context.CARS
-                        join p in context.CarParts on c.clientName equals p.link1
+            var query = from c in context.UserRegisters
+                        join p in context.CarParts on c.Username equals p.link1
                         where c.mobileNo == p.link2
                         select p;
             var table = query.ToList();
@@ -159,29 +160,34 @@ namespace Innovation_Ahead.Controllers
 
         public ActionResult Client()
         {
-            CAR carObject = new CAR();
+            CarPart carObject = new CarPart();
+
             return View(carObject);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Client(car carmodel)
+        public ActionResult Client(CarPart carmodel)
         {
-            CAR carObject = new CAR();
+            UserRegister datamodel = new UserRegister();
+            datamodel.Username = (string)Session["usern@me"];
+            datamodel.Password = (string)Session["passw0rd"];
+            var data = context.UserRegisters.Where(s => s.Username.Equals(datamodel.Username) && s.Password.Equals(datamodel.Password)).ToList();
+
             CarPart carpartsObject = new CarPart();
-            carObject.clientName = (string)Session["usern@me"];
-            carObject.mobileNo = carmodel.mobileNo;
             carpartsObject.carName = carmodel.carName;
             carpartsObject.makeyear = carmodel.makeyear;
             carpartsObject.sparePart = carmodel.sparePart;
             carpartsObject.link1 = (string)Session["usern@me"];
-            carpartsObject.link2 = carmodel.mobileNo;
-            context.CARS.Add(carObject);
-            context1.CarParts.Add(carpartsObject);
-            if (carObject.clientName != "null" && carObject.mobileNo != "null"
+            if (data.Count == 1)
+            {
+                carpartsObject.link2 = data[0].mobileNo;
+            }
+            context.CarParts.Add(carpartsObject);
+
+            if (carpartsObject.link1 != "null" && carpartsObject.link2 != "null"
                 && carpartsObject.sparePart != "null")
             {
                 context.SaveChanges();
-                context1.SaveChanges();
             }
             else { return RedirectToAction("Error"); }
             return RedirectToAction("Customer");

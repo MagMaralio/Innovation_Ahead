@@ -16,27 +16,21 @@
           <Property Name="link1" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="link2" Type="varchar" MaxLength="11" Nullable="false" />
         </EntityType>
-        <EntityType Name="CARS">
-          <Key>
-            <PropertyRef Name="clientName" />
-            <PropertyRef Name="mobileNo" />
-          </Key>
-          <Property Name="clientName" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="mobileNo" Type="varchar" MaxLength="11" Nullable="false" />
-        </EntityType>
         <EntityType Name="UserRegister">
           <Key>
             <PropertyRef Name="Username" />
+            <PropertyRef Name="mobileNo" />
           </Key>
           <Property Name="Username" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="mobileNo" Type="varchar" MaxLength="11" Nullable="false" />
         </EntityType>
         <Association Name="FK_user">
-          <End Role="CARS" Type="Self.CARS" Multiplicity="1" />
+          <End Role="UserRegister" Type="Self.UserRegister" Multiplicity="1" />
           <End Role="CarPart" Type="Self.CarPart" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CARS">
-              <PropertyRef Name="clientName" />
+            <Principal Role="UserRegister">
+              <PropertyRef Name="Username" />
               <PropertyRef Name="mobileNo" />
             </Principal>
             <Dependent Role="CarPart">
@@ -52,13 +46,13 @@
         <Function Name="spRegister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Username" Type="varchar" Mode="In" />
           <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="mobileNo" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="VehiclesModelStoreContainer">
           <EntitySet Name="CarPart" EntityType="Self.CarPart" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="CARS" EntityType="Self.CARS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRegister" EntityType="Self.UserRegister" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_user" Association="Self.FK_user">
-            <End Role="CARS" EntitySet="CARS" />
+            <End Role="UserRegister" EntitySet="UserRegister" />
             <End Role="CarPart" EntitySet="CarPart" />
           </AssociationSet>
         </EntityContainer>
@@ -77,30 +71,24 @@
           <Property Name="sparePart" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="link1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="link2" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CAR" Relationship="Self.FK_user" FromRole="CarPart" ToRole="CARS" />
-        </EntityType>
-        <EntityType Name="CAR">
-          <Key>
-            <PropertyRef Name="clientName" />
-            <PropertyRef Name="mobileNo" />
-          </Key>
-          <Property Name="clientName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="mobileNo" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="CarParts" Relationship="Self.FK_user" FromRole="CARS" ToRole="CarPart" />
+          <NavigationProperty Name="UserRegister" Relationship="Self.FK_user" FromRole="CarPart" ToRole="UserRegister" />
         </EntityType>
         <EntityType Name="UserRegister">
           <Key>
             <PropertyRef Name="Username" />
+            <PropertyRef Name="mobileNo" />
           </Key>
           <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="mobileNo" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CarParts" Relationship="Self.FK_user" FromRole="UserRegister" ToRole="CarPart" />
         </EntityType>
         <Association Name="FK_user">
-          <End Role="CARS" Type="Self.CAR" Multiplicity="1" />
+          <End Role="UserRegister" Type="Self.UserRegister" Multiplicity="1" />
           <End Role="CarPart" Type="Self.CarPart" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CARS">
-              <PropertyRef Name="clientName" />
+            <Principal Role="UserRegister">
+              <PropertyRef Name="Username" />
               <PropertyRef Name="mobileNo" />
             </Principal>
             <Dependent Role="CarPart">
@@ -111,10 +99,9 @@
         </Association>
         <EntityContainer Name="VehiclesEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="CarParts" EntityType="Self.CarPart" />
-          <EntitySet Name="CARS" EntityType="Self.CAR" />
           <EntitySet Name="UserRegisters" EntityType="Self.UserRegister" />
           <AssociationSet Name="FK_user" Association="Self.FK_user">
-            <End Role="CARS" EntitySet="CARS" />
+            <End Role="UserRegister" EntitySet="UserRegisters" />
             <End Role="CarPart" EntitySet="CarParts" />
           </AssociationSet>
           <FunctionImport Name="spLogin" ReturnType="Collection(Int32)">
@@ -124,6 +111,7 @@
           <FunctionImport Name="spRegister">
             <Parameter Name="Username" Mode="In" Type="String" />
             <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="mobileNo" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
       </Schema>
@@ -144,19 +132,12 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CARS">
-            <EntityTypeMapping TypeName="VehiclesModel.CAR">
-              <MappingFragment StoreEntitySet="CARS">
-                <ScalarProperty Name="clientName" ColumnName="clientName" />
-                <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="UserRegisters">
             <EntityTypeMapping TypeName="VehiclesModel.UserRegister">
               <MappingFragment StoreEntitySet="UserRegister">
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -15,6 +15,6 @@ namespace Innovation_Ahead.Models
         public string link1 { get; set; }
         public string link2 { get; set; }
 
-        public virtual CAR CAR { get; set; }
+        public virtual UserRegister UserRegister { get; set; }
     }
 }

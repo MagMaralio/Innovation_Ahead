@@ -11,13 +11,20 @@ namespace Innovation_Ahead
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class UserRegister
     {
-        [Required]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserRegister()
+        {
+            this.CarParts = new HashSet<CarPart>();
+        }
+    
         public string Username { get; set; }
-        [Required]
         public string Password { get; set; }
+        public string mobileNo { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CarPart> CarParts { get; set; }
     }
 }
