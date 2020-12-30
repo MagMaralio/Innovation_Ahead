@@ -11,7 +11,9 @@ namespace Innovation_Ahead
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+
     public partial class UserRegister
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,9 +21,12 @@ namespace Innovation_Ahead
         {
             this.CarParts = new HashSet<CarPart>();
         }
-    
+        [Required(ErrorMessage ="Username is required")]
+        [DisplayName("User name")]
         public string Username { get; set; }
+        [Required]
         public string Password { get; set; }
+        [Required]
         public string mobileNo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

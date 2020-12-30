@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<Innovation_Ahead.CarPart>
 
 @{
-    ViewBag.Title = "Customer";
+    ViewBag.Title = "ClientManagement";
 }
 
-<h2>Customer</h2>
+<h2>ClientManagement</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <p>
-    @using (Html.BeginForm("Customer", "home"))
+    @using (Html.BeginForm("ClientManagement", "home"))
     {
         <input type="text" name="fil" />
         <input type="submit" value="Next" />
@@ -41,3 +41,4 @@
         </tbody>
     </table>
 </p>
+

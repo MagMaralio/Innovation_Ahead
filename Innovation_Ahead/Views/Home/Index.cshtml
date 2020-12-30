@@ -1,4 +1,36 @@
-﻿@{
-    ViewBag.Title = "Innovation Ahead";
+﻿
+@{
+    ViewBag.Title = "Index";
 }
 
+<h2>Index</h2>
+
+@using (Html.BeginForm("Index", "home"))
+{
+    
+
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    @Html.ActionLink("Customer Login", "Customer", null, new { @class = "user" })
+                    <div class="caption" style="text-align:center">Customer Login</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    @Html.ActionLink("Service Provider Login", "Login", null, new { @class = "provider" })
+                    <div class="caption" style="text-align:center">Service Provider Login</div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="thumbnail">
+                    @Html.ActionLink("Become a member", "Register", null, new { @class = "welcome" })
+                    <div class="caption" style="text-align:center">Become a member</div>
+                </div>
+            </div>
+
+            </div>
+    </div>
+}

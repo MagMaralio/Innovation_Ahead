@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -23,18 +24,38 @@ namespace Innovation_Ahead.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(UserRegister Usermodel)
         {
-            UserRegister postmodel = new UserRegister();
-            postmodel.Username = Usermodel.Username;
-            postmodel.Password = Encryption(Usermodel.Password.Trim());
-            postmodel.mobileNo = Usermodel.mobileNo;
-            context.UserRegisters.Add(postmodel);
-            if (postmodel.Username != null && postmodel.Password != null)
-            {
-                Session["usern@me"] = postmodel.Username;
-                Session["passw0rd"] = postmodel.Password;
-                context.SaveChanges();
-            }
-            return RedirectToAction("Login");
+            //try
+            //{
+            //    if (ModelState.IsValid)
+            //    {
+                    UserRegister postmodel = new UserRegister
+                    {
+                        Username = Usermodel.Username,
+                        Password = Encryption(Usermodel.Password.Trim()),
+                        mobileNo = Usermodel.mobileNo
+                    };
+
+                    context.UserRegisters.Add(postmodel);
+
+                    if (postmodel.Username != null && postmodel.Password != null)
+                    {
+                        Session["usern@me"] = postmodel.Username;
+                        Session["passw0rd"] = postmodel.Password;
+                        context.SaveChanges();
+                        return RedirectToAction("Login");
+                    }
+                    return RedirectToAction("Error");
+            //    }
+
+            //    else
+            //    {
+            //        return RedirectToAction("Error");
+            //    }
+            //}
+            //catch (Exception)
+            //{
+            //    return RedirectToAction("Error");
+            //}
         }
 
         private string Encryption(string secret)
@@ -52,7 +73,7 @@ namespace Innovation_Ahead.Controllers
                     {
                         cs.Write(converted_secret, 0, converted_secret.Length);
                         cs.Close();
-                    }
+                    } 
                     secret = Convert.ToBase64String(ms.ToArray());
                 }
             }
@@ -111,8 +132,9 @@ namespace Innovation_Ahead.Controllers
             }
         }
 
-            public ActionResult Index()
+            public ActionResult Index(string selection = "Customer Login")
         {
+            selection = "test";
             return View();
         }
         public ActionResult Error()
@@ -190,8 +212,36 @@ namespace Innovation_Ahead.Controllers
                 context.SaveChanges();
             }
             else { return RedirectToAction("Error"); }
-            return RedirectToAction("Customer");
+            return RedirectToAction("ClientManagement");
         }
         
+        public ActionResult ClientManagement(string fil = "a")
+        {
+            UserRegister datamodel = new UserRegister();
+            datamodel.Username = (string)Session["usern@me"];
+            datamodel.Password = (string)Session["passw0rd"];
+            var query = from c in context.UserRegisters
+                        join p in context.CarParts on c.Username equals p.link1
+                        where c.Username == datamodel.Username && c.Password == datamodel.Password && c.mobileNo == p.link2
+                        select p;
+            var table = query.ToList();
+            List<CarPart> filter = new List<CarPart>();
+            foreach (var row in table)
+            {
+                if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                {
+                    filter.Add(new CarPart()
+                    {
+                        link1 = row.link1,
+                        link2 = row.link2,
+                        carName = row.carName,
+                        makeyear = row.makeyear,
+                        sparePart = row.sparePart
+                    });
+                }
+            }
+            ViewBag.filter = filter;
+            return View(table);
+        }
     }
 }
