@@ -1,8 +1,15 @@
-﻿@model IEnumerable<Innovation_Ahead.CarPart>
+﻿@model PagedList.IPagedList<Innovation_Ahead.CarPart>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "Customer";
 }
+
+<link rel="stylesheet"
+      href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
 
 <h2>Customer</h2>
 
@@ -17,8 +24,9 @@
     }
 </p>
 <p>
-    <table id="customers">
-        <thead>
+    <div class="container" style="margin-top: 20px;">
+        <table id="customers">
+
             <tr>
                 <th>Provider</th>
                 <th>Contact</th>
@@ -26,9 +34,9 @@
                 <th>Make year</th>
                 <th>Spare Part</th>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in ViewBag.filter)
+
+
+            @foreach (var item in Model)
             {
                 <tr>
                     <td>@item.link1</td>
@@ -38,6 +46,10 @@
                     <td>@item.sparePart</td>
                 </tr>
             }
-        </tbody>
-    </table>
+
+        </table>
+        @Html.PagedListPager(Model, page => Url.Action("Customer", new { page, pageSize = Model.PageSize }))
+        Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Products
+    </div>
 </p>
+

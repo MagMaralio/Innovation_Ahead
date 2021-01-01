@@ -8,7 +8,7 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Innovation_Ahead.Models;
-
+using PagedList;
 
 namespace Innovation_Ahead.Controllers
 {
@@ -154,7 +154,7 @@ namespace Innovation_Ahead.Controllers
 
             return View();
         }
-        public ActionResult Customer(string fil = "a")
+        public ActionResult Customer(string fil = "", int page = 1, int pageSize = 10)
         {
             var query = from c in context.UserRegisters
                         join p in context.CarParts on c.Username equals p.link1
@@ -164,7 +164,21 @@ namespace Innovation_Ahead.Controllers
             List<CarPart> filter = new List<CarPart>();
             foreach (var row in table)
             {
-                if ((row.link1+ " " +row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                if (!string.IsNullOrEmpty(fil))
+                {
+                    if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                    {
+                        filter.Add(new CarPart()
+                        {
+                            link1 = row.link1,
+                            link2 = row.link2,
+                            carName = row.carName,
+                            makeyear = row.makeyear,
+                            sparePart = row.sparePart
+                        });
+                    }
+                }
+                else
                 {
                     filter.Add(new CarPart()
                     {
@@ -177,7 +191,8 @@ namespace Innovation_Ahead.Controllers
                 }
             }
             ViewBag.filter = filter;
-            return View(table);
+            PagedList<CarPart> model = new PagedList<CarPart>(filter, page, pageSize);
+            return View(model);
         }
 
         public ActionResult Client()
@@ -215,7 +230,7 @@ namespace Innovation_Ahead.Controllers
             return RedirectToAction("ClientManagement");
         }
         
-        public ActionResult ClientManagement(string fil = "a")
+        public ActionResult ClientManagement(string fil = "")
         {
             UserRegister datamodel = new UserRegister();
             datamodel.Username = (string)Session["usern@me"];
@@ -228,7 +243,21 @@ namespace Innovation_Ahead.Controllers
             List<CarPart> filter = new List<CarPart>();
             foreach (var row in table)
             {
-                if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                if (!string.IsNullOrEmpty(fil))
+                {
+                    if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                    {
+                        filter.Add(new CarPart()
+                        {
+                            link1 = row.link1,
+                            link2 = row.link2,
+                            carName = row.carName,
+                            makeyear = row.makeyear,
+                            sparePart = row.sparePart
+                        });
+                    }
+                }
+                else
                 {
                     filter.Add(new CarPart()
                     {
