@@ -242,8 +242,10 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Customer.cshtml" />
-    <Content Include="Views\Home\Client.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
+    <Content Include="Views\Home\ClientManagement.cshtml" />
+    <Content Include="Views\Home\Client.cshtml" />
     <EntityDeploy Include="VehiclesModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>VehiclesModel.Designer.cs</LastGenOutput>
@@ -251,8 +253,6 @@
     <Content Include="VehiclesModel.edmx.diagram">
       <DependentUpon>VehiclesModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\ClientManagement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

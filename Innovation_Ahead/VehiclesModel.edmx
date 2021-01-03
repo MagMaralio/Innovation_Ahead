@@ -11,26 +11,29 @@
           </Key>
           <Property Name="sno" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="carName" Type="varchar" MaxLength="20" />
-          <Property Name="makeyear" Type="varchar" MaxLength="4" />
+          <Property Name="makeyear" Type="varchar" MaxLength="10" />
           <Property Name="sparePart" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="link1" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="quantity" Type="int" />
+          <Property Name="description" Type="varchar" MaxLength="100" />
+          <Property Name="link1" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="link2" Type="varchar" MaxLength="11" Nullable="false" />
         </EntityType>
         <EntityType Name="UserRegister">
           <Key>
-            <PropertyRef Name="Username" />
+            <PropertyRef Name="email" />
             <PropertyRef Name="mobileNo" />
           </Key>
-          <Property Name="Username" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="mobileNo" Type="varchar" MaxLength="11" Nullable="false" />
+          <Property Name="firm" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <Association Name="FK_user">
           <End Role="UserRegister" Type="Self.UserRegister" Multiplicity="1" />
           <End Role="CarPart" Type="Self.CarPart" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserRegister">
-              <PropertyRef Name="Username" />
+              <PropertyRef Name="email" />
               <PropertyRef Name="mobileNo" />
             </Principal>
             <Dependent Role="CarPart">
@@ -40,13 +43,14 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="spLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Username" Type="varchar" Mode="In" />
-          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spRegister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="Username" Type="varchar" Mode="In" />
-          <Parameter Name="Password" Type="varchar" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="password" Type="varchar" Mode="In" />
           <Parameter Name="mobileNo" Type="varchar" Mode="In" />
+          <Parameter Name="firm" Type="varchar" Mode="In" />
         </Function>
         <EntityContainer Name="VehiclesModelStoreContainer">
           <EntitySet Name="CarPart" EntityType="Self.CarPart" Schema="dbo" store:Type="Tables" />
@@ -67,20 +71,23 @@
           </Key>
           <Property Name="sno" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="carName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="makeyear" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="makeyear" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="sparePart" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="link1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="quantity" Type="Int32" />
+          <Property Name="description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="link1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="link2" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="UserRegister" Relationship="Self.FK_user" FromRole="CarPart" ToRole="UserRegister" />
         </EntityType>
         <EntityType Name="UserRegister">
           <Key>
-            <PropertyRef Name="Username" />
+            <PropertyRef Name="email" />
             <PropertyRef Name="mobileNo" />
           </Key>
-          <Property Name="Username" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="mobileNo" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="firm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="CarParts" Relationship="Self.FK_user" FromRole="UserRegister" ToRole="CarPart" />
         </EntityType>
         <Association Name="FK_user">
@@ -88,7 +95,7 @@
           <End Role="CarPart" Type="Self.CarPart" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserRegister">
-              <PropertyRef Name="Username" />
+              <PropertyRef Name="email" />
               <PropertyRef Name="mobileNo" />
             </Principal>
             <Dependent Role="CarPart">
@@ -105,13 +112,14 @@
             <End Role="CarPart" EntitySet="CarParts" />
           </AssociationSet>
           <FunctionImport Name="spLogin" ReturnType="Collection(Int32)">
-            <Parameter Name="Username" Mode="In" Type="String" />
-            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spRegister">
-            <Parameter Name="Username" Mode="In" Type="String" />
-            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="password" Mode="In" Type="String" />
             <Parameter Name="mobileNo" Mode="In" Type="String" />
+            <Parameter Name="firm" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
       </Schema>
@@ -127,6 +135,8 @@
                 <ScalarProperty Name="carName" ColumnName="carName" />
                 <ScalarProperty Name="makeyear" ColumnName="makeyear" />
                 <ScalarProperty Name="sparePart" ColumnName="sparePart" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="description" ColumnName="description" />
                 <ScalarProperty Name="link1" ColumnName="link1" />
                 <ScalarProperty Name="link2" ColumnName="link2" />
               </MappingFragment>
@@ -135,9 +145,10 @@
           <EntitySetMapping Name="UserRegisters">
             <EntityTypeMapping TypeName="VehiclesModel.UserRegister">
               <MappingFragment StoreEntitySet="UserRegister">
-                <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
+                <ScalarProperty Name="firm" ColumnName="firm" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -30,34 +30,38 @@ namespace Innovation_Ahead
         public virtual DbSet<CarPart> CarParts { get; set; }
         public virtual DbSet<UserRegister> UserRegisters { get; set; }
     
-        public virtual ObjectResult<Nullable<int>> spLogin(string username, string password)
+        public virtual ObjectResult<Nullable<int>> spLogin(string email, string password)
         {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
     
             var passwordParameter = password != null ?
-                new ObjectParameter("Password", password) :
-                new ObjectParameter("Password", typeof(string));
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", usernameParameter, passwordParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", emailParameter, passwordParameter);
         }
     
-        public virtual int spRegister(string username, string password, string mobileNo)
+        public virtual int spRegister(string email, string password, string mobileNo, string firm)
         {
-            var usernameParameter = username != null ?
-                new ObjectParameter("Username", username) :
-                new ObjectParameter("Username", typeof(string));
+            var emailParameter = email != null ?
+                new ObjectParameter("email", email) :
+                new ObjectParameter("email", typeof(string));
     
             var passwordParameter = password != null ?
-                new ObjectParameter("Password", password) :
-                new ObjectParameter("Password", typeof(string));
+                new ObjectParameter("password", password) :
+                new ObjectParameter("password", typeof(string));
     
             var mobileNoParameter = mobileNo != null ?
                 new ObjectParameter("mobileNo", mobileNo) :
                 new ObjectParameter("mobileNo", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spRegister", usernameParameter, passwordParameter, mobileNoParameter);
+            var firmParameter = firm != null ?
+                new ObjectParameter("firm", firm) :
+                new ObjectParameter("firm", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spRegister", emailParameter, passwordParameter, mobileNoParameter, firmParameter);
         }
     }
 }

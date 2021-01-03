@@ -30,17 +30,18 @@ namespace Innovation_Ahead.Controllers
             //    {
                     UserRegister postmodel = new UserRegister
                     {
-                        Username = Usermodel.Username,
-                        Password = Encryption(Usermodel.Password.Trim()),
+                        firm = Usermodel.firm,
+                        email = Usermodel.email,
+                        password = Encryption(Usermodel.password.Trim()),
                         mobileNo = Usermodel.mobileNo
                     };
 
                     context.UserRegisters.Add(postmodel);
 
-                    if (postmodel.Username != null && postmodel.Password != null)
+                    if (postmodel.email != null && postmodel.password != null)
                     {
-                        Session["usern@me"] = postmodel.Username;
-                        Session["passw0rd"] = postmodel.Password;
+                        Session["em@il"] = postmodel.email;
+                        Session["passw0rd"] = postmodel.password;
                         context.SaveChanges();
                         return RedirectToAction("Login");
                     }
@@ -104,7 +105,7 @@ namespace Innovation_Ahead.Controllers
 
         public ActionResult Login()
         {
-            if(Session["usern@me"] != null && Session["passw0rd"] != null)
+            if(Session["em@il"] != null && Session["passw0rd"] != null)
             {
                 return RedirectToAction("Client");
             }
@@ -118,13 +119,13 @@ namespace Innovation_Ahead.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(UserRegister Usermodel)
         {
-            Usermodel.Password = Encryption(Usermodel.Password.Trim());
-            var data = context.UserRegisters.Where(s => s.Username.Equals(Usermodel.Username) && s.Password.Equals(Usermodel.Password)).ToList();
+            Usermodel.password = Encryption(Usermodel.password.Trim());
+            var data = context.UserRegisters.Where(s => s.email.Equals(Usermodel.email) && s.password.Equals(Usermodel.password)).ToList();
             if (data.Count > 0)
             {
-                Session["usern@me"] = Usermodel.Username;
-                Session["passw0rd"] = Usermodel.Password;
-                return RedirectToAction("Client");
+                Session["em@il"] = Usermodel.email;
+                Session["passw0rd"] = Usermodel.password;
+                return RedirectToAction("clientManagement");
             }
             else
             {
@@ -157,7 +158,7 @@ namespace Innovation_Ahead.Controllers
         public ActionResult Customer(string fil = "", int page = 1, int pageSize = 10)
         {
             var query = from c in context.UserRegisters
-                        join p in context.CarParts on c.Username equals p.link1
+                        join p in context.CarParts on c.email equals p.link1
                         where c.mobileNo == p.link2
                         select p;
             var table = query.ToList();
@@ -166,7 +167,7 @@ namespace Innovation_Ahead.Controllers
             {
                 if (!string.IsNullOrEmpty(fil))
                 {
-                    if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                    if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart + " " + row.description).ToUpper().Contains(fil.ToUpper()))
                     {
                         filter.Add(new CarPart()
                         {
@@ -174,7 +175,9 @@ namespace Innovation_Ahead.Controllers
                             link2 = row.link2,
                             carName = row.carName,
                             makeyear = row.makeyear,
-                            sparePart = row.sparePart
+                            sparePart = row.sparePart,
+                            quantity = row.quantity,
+                            description = row.description
                         });
                     }
                 }
@@ -186,7 +189,9 @@ namespace Innovation_Ahead.Controllers
                         link2 = row.link2,
                         carName = row.carName,
                         makeyear = row.makeyear,
-                        sparePart = row.sparePart
+                        sparePart = row.sparePart,
+                        quantity = row.quantity,
+                        description = row.description
                     });
                 }
             }
@@ -206,15 +211,17 @@ namespace Innovation_Ahead.Controllers
         public ActionResult Client(CarPart carmodel)
         {
             UserRegister datamodel = new UserRegister();
-            datamodel.Username = (string)Session["usern@me"];
-            datamodel.Password = (string)Session["passw0rd"];
-            var data = context.UserRegisters.Where(s => s.Username.Equals(datamodel.Username) && s.Password.Equals(datamodel.Password)).ToList();
+            datamodel.email = (string)Session["em@il"];
+            datamodel.password = (string)Session["passw0rd"];
+            var data = context.UserRegisters.Where(s => s.email.Equals(datamodel.email) && s.password.Equals(datamodel.password)).ToList();
 
             CarPart carpartsObject = new CarPart();
             carpartsObject.carName = carmodel.carName;
-            carpartsObject.makeyear = carmodel.makeyear;
             carpartsObject.sparePart = carmodel.sparePart;
-            carpartsObject.link1 = (string)Session["usern@me"];
+            carpartsObject.makeyear = carmodel.makeyear;
+            carpartsObject.quantity = carmodel.quantity;
+            carpartsObject.description = carmodel.description;
+            carpartsObject.link1 = (string)Session["em@il"];
             if (data.Count == 1)
             {
                 carpartsObject.link2 = data[0].mobileNo;
@@ -233,11 +240,11 @@ namespace Innovation_Ahead.Controllers
         public ActionResult ClientManagement(string fil = "")
         {
             UserRegister datamodel = new UserRegister();
-            datamodel.Username = (string)Session["usern@me"];
-            datamodel.Password = (string)Session["passw0rd"];
+            datamodel.email = (string)Session["em@il"];
+            datamodel.password = (string)Session["passw0rd"];
             var query = from c in context.UserRegisters
-                        join p in context.CarParts on c.Username equals p.link1
-                        where c.Username == datamodel.Username && c.Password == datamodel.Password && c.mobileNo == p.link2
+                        join p in context.CarParts on c.email equals p.link1
+                        where c.email == datamodel.email && c.password == datamodel.password && c.mobileNo == p.link2
                         select p;
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();
@@ -245,7 +252,7 @@ namespace Innovation_Ahead.Controllers
             {
                 if (!string.IsNullOrEmpty(fil))
                 {
-                    if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart).ToUpper().Contains(fil.ToUpper()))
+                    if ((row.link1 + " " + row.link2 + " " + row.carName + " " + row.makeyear + " " + row.sparePart + " " + row.description).ToUpper().Contains(fil.ToUpper()))
                     {
                         filter.Add(new CarPart()
                         {
@@ -253,7 +260,9 @@ namespace Innovation_Ahead.Controllers
                             link2 = row.link2,
                             carName = row.carName,
                             makeyear = row.makeyear,
-                            sparePart = row.sparePart
+                            sparePart = row.sparePart,
+                            quantity = row.quantity,
+                            description = row.description
                         });
                     }
                 }
@@ -265,10 +274,13 @@ namespace Innovation_Ahead.Controllers
                         link2 = row.link2,
                         carName = row.carName,
                         makeyear = row.makeyear,
-                        sparePart = row.sparePart
+                        sparePart = row.sparePart,
+                        quantity = row.quantity,
+                        description = row.description
                     });
                 }
             }
+            //if (filter.Count == 0) { }
             ViewBag.filter = filter;
             return View(table);
         }

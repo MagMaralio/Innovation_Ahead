@@ -18,6 +18,8 @@ namespace Innovation_Ahead
         public string carName { get; set; }
         public string makeyear { get; set; }
         public string sparePart { get; set; }
+        public Nullable<int> quantity { get; set; }
+        public string description { get; set; }
         public string link1 { get; set; }
         public string link2 { get; set; }
     
