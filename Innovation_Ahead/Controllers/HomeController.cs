@@ -159,7 +159,7 @@ namespace Innovation_Ahead.Controllers
         {
             var query = from c in context.UserRegisters
                         join p in context.CarParts on c.email equals p.link1
-                        where c.mobileNo == p.link2
+                        where c.mobileNo == p.link2 && p.quantity != 0
                         select p;
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();
@@ -256,6 +256,7 @@ namespace Innovation_Ahead.Controllers
                     {
                         filter.Add(new CarPart()
                         {
+                            sno = row.sno,
                             link1 = row.link1,
                             link2 = row.link2,
                             carName = row.carName,
@@ -270,6 +271,7 @@ namespace Innovation_Ahead.Controllers
                 {
                     filter.Add(new CarPart()
                     {
+                        sno = row.sno,
                         link1 = row.link1,
                         link2 = row.link2,
                         carName = row.carName,
@@ -282,7 +284,7 @@ namespace Innovation_Ahead.Controllers
             }
             //if (filter.Count == 0) { }
             ViewBag.filter = filter;
-            return View(table);
+            return View(filter);
         }
     }
 }

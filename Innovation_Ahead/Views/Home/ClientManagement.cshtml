@@ -40,6 +40,10 @@
                 <td>@item.makeyear</td>
                 <td>@item.quantity</td>
                 <td>@item.description</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "CarParts", new { id = item.sno }, null) |
+                    @Html.ActionLink("Delete", "Delete", "CarParts", new { id = item.sno })
+                </td>
             </tr>
             }
         </tbody>
