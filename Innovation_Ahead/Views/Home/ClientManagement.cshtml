@@ -42,7 +42,7 @@
                 <td>@item.description</td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", "CarParts", new { id = item.sno }, null) |
-                    @Html.ActionLink("Delete", "Delete", "CarParts", new { id = item.sno })
+                    @Html.ActionLink("Delete", "Delete", "CarParts", new { id = item.sno }, null)
                 </td>
             </tr>
             }

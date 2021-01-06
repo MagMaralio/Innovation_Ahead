@@ -79,7 +79,7 @@ namespace Innovation_Ahead.Controllers
             CarPart carPart = db.CarParts.Find(id);
             db.CarParts.Remove(carPart);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ClientManagement", "Home");
         }
 
         protected override void Dispose(bool disposing)
