@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -32,26 +33,45 @@ namespace Innovation_Ahead.Controllers
             }
             return View(accountuser);
         }
-
-        public ActionResult DeleteUser(string email, string password)
+        // Delete: User
+        public ActionResult DeleteUser(UserRegister deleteuser)
         {
-            if (email is null | password is null)
-            {
-                throw new ArgumentNullException(nameof(email));
-            }
-            UserRegister deleteuser = new UserRegister();
-            var query = from c in database.UserRegisters
-                        where c.email == email && c.password == password
-                        select c;
-            deleteuser.email = email;
-            deleteuser.password = password;
-            deleteuser.mobileNo = query.First().mobileNo;
-            deleteuser.firm = query.First().firm;
+            //if (deleteuser is null)
+            //{
+            //    throw new ArgumentNullException(nameof(email));
+            //}
+            //var query = from c in database.UserRegisters
+            //            where c.email == deleteuser.email && c.password == deleteuser.password
+            //            select c;
+            //deleteuser.email = email;
+            //deleteuser.password = password;
+            //deleteuser.mobileNo = query.First().mobileNo;
+            //deleteuser.firm = query.First().firm;
+
             if (deleteuser == null)
             {
                 return HttpNotFound();
             }
             return View(deleteuser);
+        }
+        // Post delete
+        [HttpPost, ActionName("DeleteUser")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(UserRegister softdelete)
+        {
+            softdelete.softdelete = 1;
+            database.Entry(softdelete).State = EntityState.Modified;
+            database.SaveChanges();
+            return RedirectToAction("Logout", "Home");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                database.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

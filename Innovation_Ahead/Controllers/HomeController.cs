@@ -24,39 +24,36 @@ namespace Innovation_Ahead.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(UserRegister Usermodel)
         {
-            //try
-            //{
-            //    if (ModelState.IsValid)
-            //    {
-            UserRegister postmodel = new UserRegister
+            try
             {
-                firm = Usermodel.firm,
-                email = Usermodel.email,
-                password = Encryption(Usermodel.password.Trim()),
-                mobileNo = Usermodel.mobileNo
-            };
+                if (ModelState.IsValid)
+                {
+                    UserRegister postmodel = new UserRegister
+                    {
+                        firm = Usermodel.firm,
+                        email = Usermodel.email,
+                        password = Encryption(Usermodel.password.Trim()),
+                        mobileNo = Usermodel.mobileNo,
+                        softdelete = null
+                    };
 
-            context.UserRegisters.Add(postmodel);
+                    context.UserRegisters.Add(postmodel);
 
-            if (postmodel.email != null && postmodel.password != null)
-            {
-                Session["em@il"] = postmodel.email;
-                Session["passw0rd"] = postmodel.password;
-                context.SaveChanges();
-                return RedirectToAction("Login");
+                    if (postmodel.email != null && postmodel.password != null)
+                    {
+                        Session["em@il"] = postmodel.email;
+                        Session["passw0rd"] = postmodel.password;
+                        context.SaveChanges();
+                        return RedirectToAction("Login");
+                    }
+                    return RedirectToAction("Error");
+                }
+                return RedirectToAction("Error");
             }
-            return RedirectToAction("Error");
-            //    }
-
-            //    else
-            //    {
-            //        return RedirectToAction("Error");
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    return RedirectToAction("Error");
-            //}
+            catch (Exception)
+            {
+                return RedirectToAction("Error");
+            }
         }
 
         private string Encryption(string secret)
@@ -121,7 +118,7 @@ namespace Innovation_Ahead.Controllers
         {
             Usermodel.password = Encryption(Usermodel.password.Trim());
             var data = context.UserRegisters.Where(s => s.email.Equals(Usermodel.email) && s.password.Equals(Usermodel.password)).ToList();
-            if (data.Count > 0)
+            if (data.Count > 0 && data.First().softdelete == null)
             {
                 Session["em@il"] = Usermodel.email;
                 Session["passw0rd"] = Usermodel.password;
@@ -129,10 +126,10 @@ namespace Innovation_Ahead.Controllers
             }
             else
             {
-                return RedirectToAction("Register");
+                return RedirectToAction("Error");
             }
         }
-        
+
         public ActionResult Logout()
         {
             if (Session["em@il"] != null && Session["passw0rd"] != null)
@@ -144,7 +141,7 @@ namespace Innovation_Ahead.Controllers
             else
             {
                 return RedirectToAction("Error");
-            }  
+            }
         }
 
         public ActionResult Index(string selection = "Customer Login")
@@ -173,7 +170,7 @@ namespace Innovation_Ahead.Controllers
         {
             var query = from c in context.UserRegisters
                         join p in context.CarParts on c.email equals p.link1
-                        where c.mobileNo == p.link2 && p.quantity != 0
+                        where c.mobileNo == p.link2 && p.quantity != 0 && c.softdelete == null
                         select new { c, p };
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();
@@ -257,7 +254,7 @@ namespace Innovation_Ahead.Controllers
             datamodel.password = (string)Session["passw0rd"];
             var query = from c in context.UserRegisters
                         join p in context.CarParts on c.email equals p.link1
-                        where c.email == datamodel.email && c.password == datamodel.password && c.mobileNo == p.link2
+                        where c.email == datamodel.email && c.password == datamodel.password && c.mobileNo == p.link2 && c.softdelete == null
                         select new { c, p };
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();

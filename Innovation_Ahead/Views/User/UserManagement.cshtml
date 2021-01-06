@@ -36,6 +36,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Delete", "DeleteUser", new { email = Model.email, password = Model.password}) |
+    @Html.ActionLink("Delete", "DeleteUser", Model) |
     @Html.ActionLink("Back to Management", "ClientManagement", "Home")
 </p>

@@ -27,6 +27,7 @@
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="mobileNo" Type="varchar" MaxLength="11" Nullable="false" />
           <Property Name="firm" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="softdelete" Type="int" />
         </EntityType>
         <Association Name="FK_user">
           <End Role="UserRegister" Type="Self.UserRegister" Multiplicity="1" />
@@ -88,6 +89,7 @@
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="mobileNo" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="firm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="softdelete" Type="Int32" />
           <NavigationProperty Name="CarParts" Relationship="Self.FK_user" FromRole="UserRegister" ToRole="CarPart" />
         </EntityType>
         <Association Name="FK_user">
@@ -149,6 +151,7 @@
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
                 <ScalarProperty Name="firm" ColumnName="firm" />
+                <ScalarProperty Name="softdelete" ColumnName="softdelete" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
