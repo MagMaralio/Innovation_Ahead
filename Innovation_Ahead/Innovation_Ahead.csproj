@@ -159,6 +159,7 @@
     </Compile>
     <Compile Include="Controllers\CarPartsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -256,6 +257,8 @@
     </Content>
     <Content Include="Views\CarParts\Delete.cshtml" />
     <Content Include="Views\CarParts\Edit.cshtml" />
+    <Content Include="Views\User\UserManagement.cshtml" />
+    <Content Include="Views\User\DeleteUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,41 @@
+﻿@model Innovation_Ahead.UserRegister
+
+@{
+    ViewBag.Title = "UserManagement";
+}
+
+<h2>UserManagement</h2>
+
+<div>
+    <h4>UserRegister</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.mobileNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.mobileNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.firm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.firm)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Delete", "DeleteUser", new { email = Model.email, password = Model.password}) |
+    @Html.ActionLink("Back to Management", "ClientManagement", "Home")
+</p>

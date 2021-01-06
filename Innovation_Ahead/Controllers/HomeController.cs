@@ -132,6 +132,20 @@ namespace Innovation_Ahead.Controllers
                 return RedirectToAction("Register");
             }
         }
+        
+        public ActionResult Logout()
+        {
+            if (Session["em@il"] != null && Session["passw0rd"] != null)
+            {
+                Session["em@il"] = null;
+                Session["passw0rd"] = null;
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                return RedirectToAction("Error");
+            }  
+        }
 
         public ActionResult Index(string selection = "Customer Login")
         {
@@ -236,7 +250,7 @@ namespace Innovation_Ahead.Controllers
             return RedirectToAction("ClientManagement");
         }
 
-        public ActionResult ClientManagement(string fil = "")
+        public ActionResult ClientManagement(string fil = "", int page = 1, int pageSize = 10)
         {
             UserRegister datamodel = new UserRegister();
             datamodel.email = (string)Session["em@il"];
@@ -281,10 +295,10 @@ namespace Innovation_Ahead.Controllers
                     });
                 }
             }
-            //if (filter.Count == 0) { }
-            ViewBag.filter = filter;
-            return View(filter);
+            PagedList<CarPart> model = new PagedList<CarPart>(filter, page, pageSize);
+            return View(model);
         }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

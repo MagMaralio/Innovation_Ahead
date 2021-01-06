@@ -51,14 +51,6 @@
             @Html.DisplayFor(model => model.description)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.UserRegister.password)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.UserRegister.password)
-        </dd>
-
     </dl>
 
     @using (Html.BeginForm()) {
@@ -66,7 +58,7 @@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "ClientManagement", "Home")
+            @Html.ActionLink("Back to Management", "ClientManagement", "Home")
         </div>
     }
 </div>

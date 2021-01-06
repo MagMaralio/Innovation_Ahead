@@ -47,10 +47,13 @@
                     <td>@item.description</td>
                 </tr>
             }
-
         </table>
         @Html.PagedListPager(Model, page => Url.Action("Customer", new { page, pageSize = Model.PageSize }))
         Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Products
     </div>
 </p>
+<div>
+    @Html.ActionLink("Back", "Index")
+</div>
+
 
