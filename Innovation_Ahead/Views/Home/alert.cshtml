@@ -1,0 +1,13 @@
+﻿@model Innovation_Ahead.CarPart
+@{
+    ViewBag.Title = "alert";
+}
+
+@if (TempData["testmsg"] != null)
+{
+    <script>
+
+        alert("@TempData["testmsg"]");
+        window.location.href = "/CarParts/Edit/" + @Model.sno;
+    </script>
+}

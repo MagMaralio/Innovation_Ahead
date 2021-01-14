@@ -223,7 +223,15 @@ namespace Innovation_Ahead.Controllers
             UserRegister datamodel = new UserRegister();
             datamodel.email = (string)Session["em@il"];
             datamodel.password = (string)Session["passw0rd"];
-            var data = context.UserRegisters.Where(s => s.email.Equals(datamodel.email) && s.password.Equals(datamodel.password)).ToList();
+            var urdata = context.UserRegisters.Where(s => s.email.Equals(datamodel.email) && s.password.Equals(datamodel.password)).ToList();
+            var cpdata = context.CarParts.Where(s => s.carName.Equals(carmodel.carName) &&
+            s.makeyear.Equals(carmodel.makeyear) && s.sparePart.Equals(carmodel.sparePart));
+
+            if (cpdata.Count() == 1) 
+            {
+                TempData["testmsg"] = "You already have a same item added. Please edit the quantity";
+                return View("~/Views/Home/alert.cshtml", cpdata.First());
+            }
 
             CarPart carpartsObject = new CarPart();
             carpartsObject.carName = carmodel.carName;
@@ -232,9 +240,9 @@ namespace Innovation_Ahead.Controllers
             carpartsObject.quantity = carmodel.quantity;
             carpartsObject.description = carmodel.description;
             carpartsObject.link1 = (string)Session["em@il"];
-            if (data.Count == 1)
+            if (urdata.Count == 1)
             {
-                carpartsObject.link2 = data[0].mobileNo;
+                carpartsObject.link2 = urdata[0].mobileNo;
             }
             context.CarParts.Add(carpartsObject);
 

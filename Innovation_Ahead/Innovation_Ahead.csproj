@@ -259,6 +259,7 @@
     <Content Include="VehiclesModel.edmx.diagram">
       <DependentUpon>VehiclesModel.edmx</DependentUpon>
     </Content>
+    <Content Include="Views\Home\alert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
