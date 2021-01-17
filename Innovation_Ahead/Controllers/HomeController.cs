@@ -34,6 +34,7 @@ namespace Innovation_Ahead.Controllers
                         email = Usermodel.email,
                         password = Encryption(Usermodel.password.Trim()),
                         mobileNo = Usermodel.mobileNo,
+                        authToken = null,
                         softdelete = null
                     };
 
@@ -77,28 +78,6 @@ namespace Innovation_Ahead.Controllers
             }
             return secret;
         }
-
-        //private string Decryption(string crypto)
-        //{
-        //    string key = "MAKV2SPBNI99212";
-        //    byte[] converted_crypto = Convert.FromBase64String(crypto);
-        //    using (Aes encryptor = Aes.Create())
-        //    {
-        //        Rfc2898DeriveBytes decoded = new Rfc2898DeriveBytes()(key, new byte[] { 0x49, 0x76, 0x61, 0x6e, 0x20, 0x4d, 0x65, 0x64, 0x76, 0x65, 0x64, 0x65, 0x76 });
-        //        encryptor.Key = decoded.GetBytes(32);
-        //        encryptor.IV = decoded.GetBytes(16);
-        //        using (MemoryStream ms = new MemoryStream())
-        //        {
-        //            using (CryptoStream cs = new CryptoStream(ms, encryptor.CreateDecryptor(), CryptoStreamMode.Write))
-        //            {
-        //                cs.Write(converted_crypto, 0, converted_crypto.Length);
-        //                cs.Close();
-        //            }
-        //            crypto = Encoding.Unicode.GetString(ms.ToArray());
-        //        }
-        //    }
-        //    return crypto;
-        //}
 
         public ActionResult Login()
         {
@@ -146,7 +125,6 @@ namespace Innovation_Ahead.Controllers
 
         public ActionResult Index(string selection = "Customer Login")
         {
-            selection = "test";
             return View();
         }
         public ActionResult Error()
@@ -176,6 +154,11 @@ namespace Innovation_Ahead.Controllers
             List<CarPart> filter = new List<CarPart>();
             foreach (var row in table)
             {
+                //if (row.c.authToken == 1)
+                //{
+                //    TempData["flag"] = "Authenticated";
+                //}
+                //else { TempData["flag"] = null; }
                 if (!string.IsNullOrEmpty(fil))
                 {
                     if ((row.p.link1 + " " + row.p.link2 + " " + row.p.carName + " " + row.p.makeyear + " " + row.p.sparePart + " " + row.p.description).ToUpper().Contains(fil.ToUpper()))
@@ -225,11 +208,12 @@ namespace Innovation_Ahead.Controllers
             datamodel.password = (string)Session["passw0rd"];
             var urdata = context.UserRegisters.Where(s => s.email.Equals(datamodel.email) && s.password.Equals(datamodel.password)).ToList();
             var cpdata = context.CarParts.Where(s => s.carName.Equals(carmodel.carName) &&
-            s.makeyear.Equals(carmodel.makeyear) && s.sparePart.Equals(carmodel.sparePart));
+            s.makeyear.Equals(carmodel.makeyear) && s.sparePart.Equals(carmodel.sparePart) && s.link1.Equals(datamodel.email) && 
+            s.link2.Equals(datamodel.password));
 
             if (cpdata.Count() == 1) 
             {
-                TempData["testmsg"] = "You already have a same item added. Please edit the quantity";
+                TempData["alert"] = "You already have a same item added. Please edit the quantity";
                 return View("~/Views/Home/alert.cshtml", cpdata.First());
             }
 
@@ -266,6 +250,11 @@ namespace Innovation_Ahead.Controllers
                         select new { c, p };
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();
+            if (table.Count != 0 && table[0].c.authToken == 1)
+            {
+                TempData["flag"] = "Authenticated";
+            }
+            else { TempData["flag"] = null; }
             foreach (var row in table)
             {
                 if (!string.IsNullOrEmpty(fil))

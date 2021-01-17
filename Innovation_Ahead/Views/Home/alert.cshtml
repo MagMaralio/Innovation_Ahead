@@ -3,11 +3,11 @@
     ViewBag.Title = "alert";
 }
 
-@if (TempData["testmsg"] != null)
+@if (TempData["alert"] != null)
 {
     <script>
 
-        alert("@TempData["testmsg"]");
+        alert("@TempData["alert"]");
         window.location.href = "/CarParts/Edit/" + @Model.sno;
     </script>
 }

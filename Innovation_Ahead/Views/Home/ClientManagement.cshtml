@@ -12,6 +12,13 @@
 
 <h2>ClientManagement</h2>
 <p style="text-align: right">
+    @if (TempData["flag"] == null)
+    {
+        @Html.ActionLink("Authenticate", "sendmail", "MailAuthenticate")
+        <span> | </span>
+    }
+
+
     @Html.ActionLink("Account Management", "UserManagement", "User")
     <span> | </span>
     @Html.ActionLink("Logout", "Logout")

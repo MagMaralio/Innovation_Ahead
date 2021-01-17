@@ -27,6 +27,7 @@
           <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="mobileNo" Type="varchar" MaxLength="11" Nullable="false" />
           <Property Name="firm" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="authToken" Type="int" />
           <Property Name="softdelete" Type="int" />
         </EntityType>
         <Association Name="FK_user">
@@ -46,6 +47,9 @@
         <Function Name="spLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="email" Type="varchar" Mode="In" />
           <Parameter Name="password" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spnightjob" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="softdelete" Type="int" Mode="In" />
         </Function>
         <Function Name="spRegister" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="email" Type="varchar" Mode="In" />
@@ -89,6 +93,7 @@
           <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="mobileNo" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="firm" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="authToken" Type="Int32" />
           <Property Name="softdelete" Type="Int32" />
           <NavigationProperty Name="CarParts" Relationship="Self.FK_user" FromRole="UserRegister" ToRole="CarPart" />
         </EntityType>
@@ -116,6 +121,9 @@
           <FunctionImport Name="spLogin" ReturnType="Collection(Int32)">
             <Parameter Name="email" Mode="In" Type="String" />
             <Parameter Name="password" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spnightjob">
+            <Parameter Name="softdelete" Mode="In" Type="Int32" />
           </FunctionImport>
           <FunctionImport Name="spRegister">
             <Parameter Name="email" Mode="In" Type="String" />
@@ -151,11 +159,13 @@
                 <ScalarProperty Name="password" ColumnName="password" />
                 <ScalarProperty Name="mobileNo" ColumnName="mobileNo" />
                 <ScalarProperty Name="firm" ColumnName="firm" />
+                <ScalarProperty Name="authToken" ColumnName="authToken" />
                 <ScalarProperty Name="softdelete" ColumnName="softdelete" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spLogin" FunctionName="VehiclesModel.Store.spLogin" />
+          <FunctionImportMapping FunctionImportName="spnightjob" FunctionName="VehiclesModel.Store.spnightjob" />
           <FunctionImportMapping FunctionImportName="spRegister" FunctionName="VehiclesModel.Store.spRegister" />
         </EntityContainerMapping>
       </Mapping>

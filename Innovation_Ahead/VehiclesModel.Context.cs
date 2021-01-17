@@ -43,6 +43,15 @@ namespace Innovation_Ahead
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spLogin", emailParameter, passwordParameter);
         }
     
+        public virtual int spnightjob(Nullable<int> softdelete)
+        {
+            var softdeleteParameter = softdelete.HasValue ?
+                new ObjectParameter("softdelete", softdelete) :
+                new ObjectParameter("softdelete", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spnightjob", softdeleteParameter);
+        }
+    
         public virtual int spRegister(string email, string password, string mobileNo, string firm)
         {
             var emailParameter = email != null ?

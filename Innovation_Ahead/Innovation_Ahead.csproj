@@ -160,6 +160,7 @@
     <Compile Include="Controllers\CarPartsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailAuthenticateController.cs" />
+    <Compile Include="Controllers\memorystream.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -205,6 +206,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\client.png" />
     <Content Include="Images\customer.png" />
+    <Content Include="Images\verified.png" />
     <Content Include="Images\welcome.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -253,6 +255,7 @@
     <Content Include="Views\CarParts\Edit.cshtml" />
     <Content Include="Views\User\UserManagement.cshtml" />
     <Content Include="Views\User\DeleteUser.cshtml" />
+    <Content Include="Views\Home\alert.cshtml" />
     <EntityDeploy Include="VehiclesModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>VehiclesModel.Designer.cs</LastGenOutput>
@@ -260,7 +263,6 @@
     <Content Include="VehiclesModel.edmx.diagram">
       <DependentUpon>VehiclesModel.edmx</DependentUpon>
     </Content>
-    <Content Include="Views\Home\alert.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

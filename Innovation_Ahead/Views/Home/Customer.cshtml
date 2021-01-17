@@ -38,7 +38,12 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.link1</td>
+                    <td>@item.link1
+                    @*@if(TempData["flag"] != null)
+                    {
+                        <img src="../../Images/verified.png" width="20px" height="30px"/>
+                    }*@
+                    </td>
                     <td>@item.link2</td>
                     <td>@item.sparePart</td>
                     <td>@item.carName</td>

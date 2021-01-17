@@ -24,6 +24,7 @@ namespace Innovation_Ahead
         public string password { get; set; }
         public string mobileNo { get; set; }
         public string firm { get; set; }
+        public Nullable<int> authToken { get; set; }
         public Nullable<int> softdelete { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
