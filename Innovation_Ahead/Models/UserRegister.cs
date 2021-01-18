@@ -12,5 +12,6 @@ namespace Innovation_Ahead.Models
         public string password { get; set; }
         public string mobileNo { get; set; }
         public string firm { get; set; }
+        public Nullable<int> authToken { get; set; }
     }
 }

@@ -23,6 +23,10 @@ namespace Innovation_Ahead
         public string link1 { get; set; }
         public string link2 { get; set; }
     
+        //additional models
+
+        public int? verificationDetails { get; set; }
+
         public virtual UserRegister UserRegister { get; set; }
     }
 }

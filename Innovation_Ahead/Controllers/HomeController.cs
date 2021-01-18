@@ -154,11 +154,6 @@ namespace Innovation_Ahead.Controllers
             List<CarPart> filter = new List<CarPart>();
             foreach (var row in table)
             {
-                //if (row.c.authToken == 1)
-                //{
-                //    TempData["flag"] = "Authenticated";
-                //}
-                //else { TempData["flag"] = null; }
                 if (!string.IsNullOrEmpty(fil))
                 {
                     if ((row.p.link1 + " " + row.p.link2 + " " + row.p.carName + " " + row.p.makeyear + " " + row.p.sparePart + " " + row.p.description).ToUpper().Contains(fil.ToUpper()))
@@ -171,7 +166,8 @@ namespace Innovation_Ahead.Controllers
                             makeyear = row.p.makeyear,
                             sparePart = row.p.sparePart,
                             quantity = row.p.quantity,
-                            description = row.p.description
+                            description = row.p.description,
+                            verificationDetails = row.c.authToken
                         });
                     }
                 }
@@ -185,7 +181,8 @@ namespace Innovation_Ahead.Controllers
                         makeyear = row.p.makeyear,
                         sparePart = row.p.sparePart,
                         quantity = row.p.quantity,
-                        description = row.p.description
+                        description = row.p.description,
+                        verificationDetails = row.c.authToken
                     });
                 }
             }
@@ -208,10 +205,9 @@ namespace Innovation_Ahead.Controllers
             datamodel.password = (string)Session["passw0rd"];
             var urdata = context.UserRegisters.Where(s => s.email.Equals(datamodel.email) && s.password.Equals(datamodel.password)).ToList();
             var cpdata = context.CarParts.Where(s => s.carName.Equals(carmodel.carName) &&
-            s.makeyear.Equals(carmodel.makeyear) && s.sparePart.Equals(carmodel.sparePart) && s.link1.Equals(datamodel.email) && 
-            s.link2.Equals(datamodel.password));
+            s.makeyear.Equals(carmodel.makeyear) && s.sparePart.Equals(carmodel.sparePart) && s.link1.Equals(datamodel.email));
 
-            if (cpdata.Count() == 1) 
+            if (cpdata.Count() == 1)
             {
                 TempData["alert"] = "You already have a same item added. Please edit the quantity";
                 return View("~/Views/Home/alert.cshtml", cpdata.First());
@@ -250,11 +246,18 @@ namespace Innovation_Ahead.Controllers
                         select new { c, p };
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();
-            if (table.Count != 0 && table[0].c.authToken == 1)
+            if (table.Count != 0)
             {
-                TempData["flag"] = "Authenticated";
+                if (table[0].c.authToken == 1)
+                {
+                    TempData["flag"] = "Authenticated";
+                }
+                else { TempData["flag"] = null; }
             }
-            else { TempData["flag"] = null; }
+            else
+            {
+                TempData["flag"] = "No Items";
+            }
             foreach (var row in table)
             {
                 if (!string.IsNullOrEmpty(fil))

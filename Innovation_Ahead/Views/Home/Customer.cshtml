@@ -39,10 +39,10 @@
             {
                 <tr>
                     <td>@item.link1
-                    @*@if(TempData["flag"] != null)
+                    @if(@item.verificationDetails != null)
                     {
                         <img src="../../Images/verified.png" width="20px" height="30px"/>
-                    }*@
+                    }
                     </td>
                     <td>@item.link2</td>
                     <td>@item.sparePart</td>
