@@ -16,11 +16,18 @@
 <p>
     @using (Html.BeginForm("Customer", "home"))
     {
-        <input type="text" name="fil" />
-        <input type="submit" value="Search" />
+        <div style="float:left;">
+            <input type="text" name="fil" />
+            <input type="submit" value="Search" />
+        </div>
+        <div style="float:right;">
+            <input type="submit" value="Filter Quantity" />
+            <input type="text" name="qty" />
+        </div>
     }
 </p>
-<p>
+
+<p style="padding-bottom:30px">
     <div class="container" style="margin-top: 20px;">
         <table id="customers">
 
@@ -38,20 +45,21 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.link1
-                    @if(@item.verificationDetails != null)
+                    <td>
+                        @item.link1
+                    @if (@item.verificationDetails != null)
                     {
-                        <img src="../../Images/verified.png" width="20px" height="30px"/>
+                        <img src="../../Images/verified.png" width="20px" height="30px" />
                     }
-                    </td>
-                    <td>@item.link2</td>
-                    <td>@item.sparePart</td>
-                    <td>@item.carName</td>
-                    <td>@item.makeyear</td>
-                    <td>@item.quantity</td>
-                    <td>@item.description</td>
-                </tr>
-            }
+                </td>
+                <td>@item.link2</td>
+                <td>@item.sparePart</td>
+                <td>@item.carName</td>
+                <td>@item.makeyear</td>
+                <td>@item.quantity</td>
+                <td>@item.description</td>
+            </tr>
+        }
         </table>
         @Html.PagedListPager(Model, page => Url.Action("Customer", new { page, pageSize = Model.PageSize }))
         Showing @Model.FirstItemOnPage to @Model.LastItemOnPage of @Model.TotalItemCount Products

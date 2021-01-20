@@ -144,20 +144,28 @@ namespace Innovation_Ahead.Controllers
 
             return View();
         }
-        public ActionResult Customer(string fil = "", int page = 1, int pageSize = 10)
+        public ActionResult Customer(string fil = "",int? qty = null, int page = 1, int pageSize = 10)
         {
             var query = from c in context.UserRegisters
                         join p in context.CarParts on c.email equals p.link1
                         where c.mobileNo == p.link2 && p.quantity != 0 && c.softdelete == null
                         select new { c, p };
+            if (qty != null)
+            { 
+                query = from c in context.UserRegisters
+                            join p in context.CarParts on c.email equals p.link1
+                            where c.mobileNo == p.link2 && p.quantity <= qty && c.softdelete == null
+                            select new { c, p };
+            }
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();
             foreach (var row in table)
             {
-                if (!string.IsNullOrEmpty(fil))
+                if (!string.IsNullOrEmpty(fil) | Session["filter"] !=null)
                 {
                     if ((row.p.link1 + " " + row.p.link2 + " " + row.p.carName + " " + row.p.makeyear + " " + row.p.sparePart + " " + row.p.description).ToUpper().Contains(fil.ToUpper()))
                     {
+                        Session["filter"] = fil;
                         filter.Add(new CarPart()
                         {
                             link1 = row.c.firm,
