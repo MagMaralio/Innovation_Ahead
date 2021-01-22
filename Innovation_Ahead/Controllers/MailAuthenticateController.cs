@@ -45,6 +45,7 @@ namespace Innovation_Ahead.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        
         public ActionResult validate(string id)
         {
             id = id.Replace(" ", "+");

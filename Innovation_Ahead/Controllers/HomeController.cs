@@ -154,14 +154,18 @@ namespace Innovation_Ahead.Controllers
             { 
                 query = from c in context.UserRegisters
                             join p in context.CarParts on c.email equals p.link1
-                            where c.mobileNo == p.link2 && p.quantity <= qty && c.softdelete == null
+                            where c.mobileNo == p.link2 && p.quantity >= qty && c.softdelete == null
                             select new { c, p };
             }
             var table = query.ToList();
             List<CarPart> filter = new List<CarPart>();
+            if (Session["filter"] != null)
+            {
+                fil = (string)Session["filter"];
+            }
             foreach (var row in table)
             {
-                if (!string.IsNullOrEmpty(fil) | Session["filter"] !=null)
+                if (!string.IsNullOrEmpty(fil))
                 {
                     if ((row.p.link1 + " " + row.p.link2 + " " + row.p.carName + " " + row.p.makeyear + " " + row.p.sparePart + " " + row.p.description).ToUpper().Contains(fil.ToUpper()))
                     {
